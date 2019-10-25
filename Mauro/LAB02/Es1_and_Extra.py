@@ -10,25 +10,28 @@ with open("GLT.csv") as f:
 ###Punto 2: 'Pulizia' dati
 
 for n in range(len(dataset)):
-    if dataset[n][1] == "" :
-
-        if n == (len(dataset)-1):
-           dataset[n][1] = (float(dataset[n-1][1]) + 0) / 2
+    flag=0
+    if dataset[n][1] == "":
+        i = n
+        while dataset[i][1] == "" and flag==0:
+            if i != (len(dataset)-1):
+               if dataset[n][3] == dataset[i+1][3]:
+                  i += 1
+               else:
+                  flag=1
+            else:
+                flag=1
         
+        if flag==0:
+            if n==0 or (n!=0 and dataset[n-1][3] != dataset[n][3]): 
+                dataset[n][1] = (0 + float(dataset[i][1])) / 2
+            else:
+                dataset[n][1] = (float(dataset[n-1][1]) + float(dataset[i][1])) / 2
         else:
-             i = n+1
-             if dataset[n][3] == dataset[i][3] :
-                 while dataset[i][1] == "" and dataset[n][3] == dataset[i][3] : 
-                       i += 1
-
-                 if n != 0:
-                     dataset[n][1] = (float(dataset[n-1][1]) + float(dataset[i][1])) / 2
-             
-                 else:
-                     dataset[n][1] = (0 + float(dataset[i][1])) / 2
-             
-             else:
-                 dataset[n][1] = (float(dataset[n-1][1]) + 0) / 2
+            if n == 0 or (n!=0 and dataset[n-1][3] != dataset[n][3]):
+                print('Error: nessun valore presente per la città:', dataset[n][3])
+            else:
+                dataset[n][1] = (float(dataset[n-1][1]) + 0) / 2
 
 
 ### Adesso AverageTemperature in dataset è corretto
@@ -51,8 +54,7 @@ def rank(N, city):
     print('\nLe', N, 'temperature più calde a', city, 'sono:\n', l_rank[0:N])
     print('\nLe', N, 'temperature più fredde a', city, 'sono:\n', l_rank[(lun-N-1):-1]) ##ignoro -1000 poiché aggiunto da me alla fine della lista
 
-rank(7, 'Abidjan')  
-
+rank(7, 'Abidjan')
 
 """Punto 4 - EXTRA: Let’s search for other anomalies in data distribution with the help of matplotlib. Plot the distribution
 of the average land temperatures for Rome and Bangkok using the aforementioned histogram
