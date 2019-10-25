@@ -49,7 +49,11 @@ def rank(N, city):
                    break
            if u==0:  ## Non c'è bisogno di questo if avendo inizializzato l_rank= [-1000]
               l_rank.append(el[1]) ## cioè le temperature saranno sempre maggori di -1000, quindi u non rimarrà mai zero 
-
+    
+    # l_rank= [float(el[1]) for el in dataset if el[1] !='AverageTemperature' and el[3]==city]
+    # l_rank.sort()
+    # l_rank.reverse() ###Questi tre comandi creano un vettore con temperature ordinate (decrescente) in poche righe (Attenti al print. elimina ultimo valore)
+    
     lun=len(l_rank)
     print('\nLe', N, 'temperature più calde a', city, 'sono:\n', l_rank[0:N])
     print('\nLe', N, 'temperature più fredde a', city, 'sono:\n', l_rank[(lun-N-1):-1]) ##ignoro -1000 poiché aggiunto da me alla fine della lista
@@ -86,7 +90,7 @@ plt.show()
 
 List_Rome_Celsius=[]
 List_Bangkok_Celsius=[]
-for el in dataset:
+for el in dataset: #SINTESI: List_Rome..= [float(el[1]) for el in dataset if el[1] !='AverageTemperature' and el[3]==Rome]
     if el[3] == 'Rome':
         List_Rome_Celsius.append(float(el[1]))
     if el[3]== 'Bangkok':
